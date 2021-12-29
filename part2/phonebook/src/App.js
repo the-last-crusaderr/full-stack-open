@@ -3,6 +3,30 @@ import React, { useState,useEffect } from 'react'
 import {getPersonList,getPerson,deletePerson,addPerson,updatePerson} from './services/persons'
 
 
+const Notification = ({msg,setMsg}) => {
+
+  if(msg === null){
+    return null;
+
+  }
+
+  if(msg.length > 30){
+    return (
+      <div className="error">
+          {msg}
+      </div>
+
+    )
+  }
+
+
+  return (
+    <div className="notify">
+      {msg}   
+    </div>
+
+  )
+}
 
 
 
@@ -41,7 +65,7 @@ const PersonForm = ({newName,newNumber,handleSubmit,handleName,handleNumber}) =>
 }
 
 
-const Persons = ({filteredlist,setFilteredlist,setPersons}) => {
+const Persons = ({filteredlist,setFilteredlist,setPersons,setMsg}) => {
 
 
   const handleDeletion = (event) => {
@@ -57,7 +81,12 @@ const Persons = ({filteredlist,setFilteredlist,setPersons}) => {
     
       console.log(personObject); //
 
-      deletePerson(personObject[0].id);
+      deletePerson(personObject[0].id).then( (res) => console.log("deleteResult=",res.data) ).catch(
+            (err) => {
+                setMsg(`The information of ${fullName} has already been deleted from database.`);
+                setTimeout( () => setMsg(null),5000 );
+            }
+      );                    //current 
 
       let newList = filteredlist;
       newList = newList.filter( elem => elem.id !== personObject[0].id  )
@@ -89,6 +118,7 @@ const App = () => {
   const [newNumber,setNewNumber] = useState('');
   const [filterText,setFilterText] = useState('');
   const [filteredlist,setFilteredlist] = useState(persons);
+  const [msg,setMsg] = useState(null);
 
  
   console.log(getPerson(1));   //
@@ -151,6 +181,8 @@ const App = () => {
     }
     else{
       addPerson(newPerson).then( (res) => { getPersonList().then(response => setPersons(response.data)) });
+      setMsg(`Added ${newPerson.name}`);
+      setTimeout( () => setMsg(null),5000);
 
       /* trash must be deleted later
       newPerson["id"] = persons.length+1;
@@ -165,6 +197,8 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
+      <Notification msg={msg} setMsg={setMsg}/>
+
       <Filter filterText={filterText} handleFiltering={handleFiltering}/>
 
       <h2>add a new</h2>
@@ -173,7 +207,7 @@ const App = () => {
       
       <h2>Numbers</h2> 
 
-      <Persons filteredlist={filteredlist} setFilteredlist={setFilteredlist} setPersons={setPersons}/>
+      <Persons filteredlist={filteredlist} setFilteredlist={setFilteredlist} setPersons={setPersons} setMsg={setMsg}/>
       
     </div>
   )

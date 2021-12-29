@@ -1,0 +1,23 @@
+.notify{
+
+    border: 10px solid green;
+    font-size: 20px;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: grey;
+    color: green;
+
+
+}
+
+.error{
+    border: 10px solid red;
+    font-size: 20px;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: grey;
+    color: red;
+
+}
