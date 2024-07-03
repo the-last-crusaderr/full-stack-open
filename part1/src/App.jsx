@@ -4,29 +4,62 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 
-const Person = (props) => {
-	console.log(props);
+
+const Header = (props) => {
+       return(
+        <>
+          <h1>{props.course}</h1>
+        </>
+       ) 
+	}	
+
+const Total = (props) => {
 	return (
-	  <>
-	    <p>I am {props.name} and I am {props.age} years old.</p>
-          </>
+	 <>
+	  <p>Number of exercises is {props.exercises1 + props.exercises2 + props.exercises3}</p>	
+         </>
 	)
+	}
+
+const Part = (props) => {
+     return (
+	<>
+          <p>
+           {props.part} {props.exercises}
+          </p>
+        </>
+     )
+	}
+
+const Content = (props)=> {
+      return (
+        <>
+	<Part part={props.part1} exercises={props.exercises1}/>
+	<Part part={props.part2} exercises={props.exercises2}/>
+	<Part part={props.part3} exercises={props.exercises3}/>
+        </>
+      )
 	}
 
 
 function App() {
-  const [count, setCount] = useState(10);
-  const now = new Date();
-  console.log("Constructing pages with the help of Vite");
+ console.log("Constructing pages with the help of Vite");
+  
+  const course = 'Half Stack application development'
+  const part1 = 'Fundamentals of React'
+  const exercises1 = 10
+  const part2 = 'Using props to pass data'
+  const exercises2 = 7
+  const part3 = 'State of a component'
+  const exercises3 = 14
+
   return (
-    <>
-      <p>
-        The current time is {now.toString()};  <br/>
-        This is restarted career on web development....
-      </p>
-      <Person name="Jack" age="15"/>
-      <Person name="Jill" age="20"/>
-    </>
+    <div>
+      <Header course={course}/>
+      <Content part1={part1} part2={part2} part3={part3}
+        exercises1={exercises1} exercises2={exercises2} exercises3={exercises3}/>
+      <Total exercises1={exercises1} exercises2={exercises2} exercises3={exercises3}/> 
+    </div>
   )
 }
 
