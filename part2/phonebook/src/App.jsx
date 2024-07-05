@@ -1,28 +1,62 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import Form from './components/form'
 import Filter from './components/filter'
+import axios from 'axios'
+
+
+
 
 
 
 function App() {
 
-// dummy data for testing search features
-  const [person, setPerson] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ])
 
+    
+
+
+// dummy data for testing search features
+  const [person, setPerson] =useState([
+    { 
+      "name": "Bert Burger", 
+      "number": "040-123456",
+      "id": "1000"
+    }])
 
   // react states
   const [newEntry,setNewEntry] = useState('')
   const [newPhoneEntry,setPhoneEntry] = useState('')
   const [searchText,setSearchText] = useState('')	
-  const [filteredList, setFilteredList] = useState(person)
+  const [filteredList, setFilteredList] = useState([
+    { 
+      "name": "Bert Burger", 
+      "number": "040-123456",
+      "id": "1000"
+    }])
+
+
+
+// fetching data from db.json with json-server which usually runs at -p3000
+ 
+
+     useEffect(
+     () =>{ axios.get('http://localhost:3001/persons')
+            .then( response => {
+             console.log("Promise fulfilled")
+	     setPerson(response.data)
+	     console.log(response.data)
+	     console.log('Value in person state ',person)
+	     } )
+            .catch(error => {
+              console.error('There was an error fetching the persons data!', error);
+            })
+//         console.log("rendering",jsonData.length," people")
+},[])
+
+
+
 
   const duplicate = () => {
 	  let found = person.find( item => newEntry === item.name  )
