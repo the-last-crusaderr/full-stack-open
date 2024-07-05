@@ -1,3 +1,12 @@
+/*
+
+ todo - need to implement create and update from fetching json server
+
+
+*/
+
+
+
 import { useState,useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
@@ -5,11 +14,7 @@ import './App.css'
 import Form from './components/form'
 import Filter from './components/filter'
 import axios from 'axios'
-
-
-
-
-
+import services from './services/person.js'
 
 function App() {
 
@@ -42,11 +47,11 @@ function App() {
  
 
      useEffect(
-     () =>{ axios.get('http://localhost:3001/persons')
+     () =>{ services.getAll()
             .then( response => {
              console.log("Promise fulfilled")
-	     setPerson(response.data)
-	     console.log(response.data)
+	     setPerson(response)
+	     console.log(response)
 	     console.log('Value in person state ',person)
 	     } )
             .catch(error => {
