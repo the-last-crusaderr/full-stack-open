@@ -2,46 +2,9 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import Form from './components/form'
+import Filter from './components/filter'
 
-
-function Input({newEntry,setNewEntry,newPhoneEntry,setPhoneEntry}) {
-	const handleInput = (event) => setNewEntry(event.target.value)
-        console.log(event.target.value)
-	console.log("new entry",newEntry)
-
-	const handlePhoneInput = (event) => setPhoneEntry(event.target.value) 
-
-     return (
-	<>
-	 <span> Name: </span>
-         <input type="text" value={newEntry} onChange={handleInput}/>
-	 <br/>
-	 <span>Number: </span>
-	 <input type="text" value={newPhoneEntry} onChange={handlePhoneInput}/>
-	  
-        </>
-     )
-	}
-
-
-function Filter({searchText,person,setSearchText,filteredList,setFilteredList}) {
-       
-       const handleInput = (event) => {
-	       setSearchText(event.target.value)
-               setFilteredList( person.filter( (item) => item.name.includes(searchText)))
-       }
-       console.log("searchText",searchText)
-
-	return (
-	 <>
-	  filter shown with:
-          <input type='text' onChange={handleInput} value={searchText}/>
-         </>
-	)
-	}
-
-
-	
 
 
 function App() {
@@ -92,15 +55,13 @@ function App() {
       filteredList={filteredList} setFilteredList={setFilteredList} />
 
      <h3>Add a new:</h3>
+     
+     <Form handleSubmit={handleSubmit} newEntry={newEntry} setNewEntry={setNewEntry}
+           newPhoneEntry={newPhoneEntry} setPhoneEntry={setPhoneEntry}/>
 
-     <form onSubmit={handleSubmit}>
-      <Input newEntry={newEntry} setNewEntry={setNewEntry}
-       newPhoneEntry={newPhoneEntry} setPhoneEntry={setPhoneEntry}/> <br/>
-
-      <button type="submit">save</button>
-     </form>
 
      <h2>Phone Directory:</h2>
+
      <ul>
       { filteredList.map(item => <li key={item.name}> {item.name} {item.number}</li> ) }
      </ul>
