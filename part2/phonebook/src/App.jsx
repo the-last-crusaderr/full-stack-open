@@ -70,11 +70,26 @@ function App() {
 	 }
 
   const handleSubmit = (event) => {
-		event.preventDefault()
+	   event.preventDefault()
                 
-		if(duplicate()){
-		   alert(`${newEntry} is already in the phonebook` )	
-                   return
+          if(duplicate()){
+           //alert(`${newEntry} is already in the phonebook` )	
+           const res = window.confirm(`Do you really want to update old entry with ${newEntry}?`)
+                 
+
+	   if (res){
+	      let id = person.filter( item => item.name == newEntry)
+	      id = id[0].id
+	      let newObj = {'name':newEntry,'number':newPhoneEntry,'id':id}
+              services.update(newObj,id).then(res => console.log(`${res} has been updated`))   
+              
+              let updatedPersonList = person.filter( item => item.id != id) 
+              updatedPersonList = updatedPersonList.concat(newObj)
+	      setPerson(updatedPersonList)
+              console.log("Person list after modification",person)
+			
+		  }
+	   return
 		 }
                
                 // adding new entry to backend 
@@ -83,8 +98,8 @@ function App() {
 		 services.create(tempObj).then(res => {
 		 let tempPerson = [...person]
 		 tempPerson.push(tempObj)
-		 setPerson(tempPerson)					
-			} )
+		 setPerson(tempPerson)
+		 } )
 	  } 
 
 
@@ -99,10 +114,10 @@ function App() {
 	    services.remove(id).then( (res) => console.log(`${id} has been deleted`))
             .catch( error => console.log('Something goes wrong while deletion') )
 
-
             const updatedPersonList = person.filter(item  => item.id != id   )
             setPerson(updatedPersonList)
-	  }	  
+	
+  }	  
 
 
 
