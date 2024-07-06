@@ -5,6 +5,7 @@ import axios from 'axios'
  getAll
  create
  update
+ remove
 */
 
 
@@ -19,16 +20,22 @@ function getAll(){
 
 
 function create (newObject) {
-        axios.post(baseUrl,newObject).then( res => res.data)
+       return  axios.post(baseUrl,newObject).then( res => res.data)
 	.catch(error => alert('Error while creation of resources'))
 	}
 
 function update(newObject,id){
-       axios.put(`${baseUrl}/${id}`,newObject).then( res => res.data)
+       return axios.put(`${baseUrl}/${id}`,newObject).then( res => res.data)
         .catch(error => alert('Error while updation of resources'))
 	}
 
+function remove(id){
+           return axios.delete(`${baseUrl}/${id}`).then(res => res.data)
+	   .catch(error => alert(`Error while deletion of resource ${id}`))
+	}
 
-export default {getAll,create,update}
+
+
+export default {getAll,create,update,remove}
 
 

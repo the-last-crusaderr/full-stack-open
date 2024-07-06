@@ -76,13 +76,33 @@ function App() {
 		   alert(`${newEntry} is already in the phonebook` )	
                    return
 		 }
+               
+                // adding new entry to backend 
 
-		let tempPerson = [...person]
-		let tempObj = {'name':newEntry,'number':newPhoneEntry,'id':person.length}
-		tempPerson.push(tempObj)
-		setPerson(tempPerson)
-		
+                let tempObj = {'name':newEntry,'number':newPhoneEntry,'id':person.length+1}
+		 services.create(tempObj).then(res => {
+		 let tempPerson = [...person]
+		 tempPerson.push(tempObj)
+		 setPerson(tempPerson)					
+			} )
 	  } 
+
+
+  const handleDeletion = (event) => {
+	    console.log('planning deletion')
+	    console.log('target',event.target)
+	    console.log('parent_element',event.target.parentElement)
+	    
+	    const id = event.target.parentElement.getAttribute('dataId')
+            console.log(id)
+
+	    services.remove(id).then( (res) => console.log(`${id} has been deleted`))
+            .catch( error => console.log('Something goes wrong while deletion') )
+
+
+            const updatedPersonList = person.filter(item  => item.id != id   )
+            setPerson(updatedPersonList)
+	  }	  
 
 
 
@@ -102,7 +122,9 @@ function App() {
      <h2>Phone Directory:</h2>
 
      <ul>
-      { filteredList.map(item => <li key={item.name}> {item.name} {item.number}</li> ) }
+      { filteredList.map(item => <li dataId={item.id} key={item.name}> {item.name} {item.number}
+      <button onClick={handleDeletion}>Delete</button> </li>
+        ) }
      </ul>
     </>
   )
